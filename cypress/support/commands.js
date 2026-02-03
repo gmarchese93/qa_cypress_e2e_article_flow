@@ -24,8 +24,6 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-import { faker } from '@faker-js/faker';
-
 Cypress.Commands.add('login', (email, password) => {
   cy.visit('#/login');
 
