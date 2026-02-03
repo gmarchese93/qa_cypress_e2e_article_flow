@@ -1,5 +1,20 @@
+import { faker } from '@faker-js/faker';
+
 describe('Article flow', () => {
   let article;
+
+  const user = {
+    email: faker.internet.email(),
+    password: faker.internet.password(10),
+    username: faker.internet.userName(),
+  };
+
+  before(() => {
+    // Register a unique user via API
+    cy.request('POST', '/api/users', {
+      user,
+    });
+  });
 
   beforeEach(() => {
     article = {
@@ -15,17 +30,26 @@ describe('Article flow', () => {
   it('should create an article successfully', () => {
     cy.createArticle(article);
 
-    cy.contains('h1', article.title).should('be.visible');
-    cy.contains(article.body).should('be.visible');
-    cy.contains(article.tag).should('be.visible');
+    cy.contains('h1', article.title)
+      .should('be.visible');
+
+    cy.contains(article.body)
+      .should('be.visible');
+
+    cy.contains(article.tag)
+      .should('be.visible');
   });
 
   it('should delete an article successfully', () => {
     cy.createArticle(article);
 
-    cy.contains('button', 'Delete Article').click();
+    cy.contains('button', 'Delete Article')
+      .click();
 
-    cy.contains('Global Feed').should('be.visible');
-    cy.contains(article.title).should('not.exist');
+    cy.contains('Global Feed')
+      .should('be.visible');
+
+    cy.contains(article.title)
+      .should('not.exist');
   });
 });
